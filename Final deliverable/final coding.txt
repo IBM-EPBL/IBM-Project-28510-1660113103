@@ -1,0 +1,55 @@
+#ReadTAing the train .csv by removing the
+#last column since it's an empty column
+DATA_PATH ="dataset/Training.csv"
+data =pd.read_csv(DATA_PATH).DROPNA(axis =1)
+#Checking whether the dataset is balanced or not
+disease_counts= data["prognosis"].value_counts()
+temp_df = pd.DataFrame({
+    "Disease":disease_counts.index,
+    "Counts":disease_counts.values
+})(figsize =(18.8))
+sns.barplot(x="Disease",y="Counts", data =temp_df)
+plt.xticks(rotation=90)
+plt.show()
+x=data.iloc[:,:-1]
+y=data.iloc[:,-1]
+X_train,X-test,y_train,y_test=train_test_split(
+    X,y,test_size=0.2,random_state=24)
+print(f"Train:{X_train.shape},{y_tarin.shape}")
+print(f"Test:{X_tewst.shape},{y_test.shape}")
+#Encoding the target value into numerical
+#value using LabelEncoder()
+encoder=LabelEncoder()
+data["prognosis"] =encoder.fit_transform(data["prognosis"])
+#Defining scoring metric for k-fold cross validation
+def cv_scoring(estimator,X,y):
+    return accuracy_score(y,estimator.predict(x))
+#Intializing Models
+models={
+    "SVC":SVC(),
+    "Gaussian NB":GaussianNB(),
+    "Random Forest":RandomForestClassifier(random_state=18
+}
+#producing cross validation score for the models
+for model_name in models:
+    model=models[model_name]
+    scores=cross_val_score(model,X,y,cv=10,n_jobs=-1,scoring=cv_scoring)
+    print("==*30")
+    print(model_name)
+    print(f"Scores:{scores}")
+    print(f"Mean score:{np.mean(score)}")
+#Training and testing SVM Classifier
+    svm_model=SVC()
+    svm_model.fit(X_train,y_train(X))
+    preds=svm_model.predict(X_test)
+printf("Accuary on train data by SVM Classifier\:{accuary_score(y_train,svm_model.predict(X_train))*100}")
+print(f"Accuracy on test data by SVM Classifier\:{accuracy_score(y_test,preds*100)}")
+cf_matrix=confusion _matrix(y_test,preds)
+plt.figure(figsize=(12,8))
+sns.heatmap(cf_matreix,annot=True)
+plt.title("Confusion Matrix for SVM Classification on Test Data")
+plt.show()
+#Training and testing Naive Bayes Classifier
+nb_model=GaussianNB()
+nb_model.fit(X_train,y_train)
+preds=nb_model.predict(X_tset)
